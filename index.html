@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漫步雲端・阿里山迷霧森林之旅｜官方數位導覽</title>
+    <style>
+        /* CSS 變數設定 - 60:30:10 色彩比例 */
+        :root {
+            --bg-main: #F4F6F0;       /* 60% 主色：極簡霧白 */
+            --color-sec: #2D4A3E;     /* 30% 輔助色：森林深綠 */
+            --color-accent: #E07A5F;  /* 10% 強調色：日出粉橘 */
+            --text-dark: #222222;
+            --text-light: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* 1. 固定式導覽列 Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-sec);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar .logo {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin-left: 25px;
+        }
+
+        .navbar ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: var(--color-accent);
+        }
+
+        /* 2. 主視覺區 Hero Section (帶有視差感) */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(45, 74, 62, 0.5), rgba(45, 74, 62, 0.7)), 
+                        url('images/hero-alishan.jpg') no-repeat center center/cover;
+            background-attachment: fixed; /* 視差滾動效果 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* CTA 行動呼籲按鈕 */
+        .cta-btn {
+            background-color: var(--color-accent);
+            color: var(--text-light);
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(224, 122, 95, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #d0694e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(224, 122, 95, 0.6);
+        }
+
+        /* 區塊通用樣式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--color-sec);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--color-accent);
+            margin: 10px auto 0;
+        }
+
+        /* 3. RWD 卡片式設計 Card Design */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        /* 滑鼠特效 Hover Effect */
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(45, 74, 62, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-content h3 {
+            color: var(--color-sec);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .card-content p {
+            color: #555555;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        /* 4. 手風琴選單 Accordion */
+        .accordion-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background-color: #FFFFFF;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .accordion-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .accordion-title {
+            display: block;
+            padding: 20px;
+            background-color: var(--color-sec);
+            color: var(--text-light);
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .accordion-title::after {
+            content: '+';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            padding: 0 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: #FFFFFF;
+            color: #444444;
+        }
+
+        /* 當 Checkbox 被勾選時展開內容 */
+        .accordion-item input[type="checkbox"]:checked ~ .accordion-content {
+            max-height: 200px;
+            padding: 20px;
+        }
+
+        .accordion-item input[type="checkbox"]:checked ~ .accordion-title::after {
+            content: '-';
+        }
+
+        /* 5. 頁尾 Footer */
+        footer {
+            background-color: var(--color-sec);
+            color: var(--text-light);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* RWD 手機版微調 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .navbar ul li {
+                margin: 0 10px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 固定式導覽列 -->
+    <nav class="navbar">
+        <div class="logo">阿里山行・Alishan</div>
+        <ul>
+            <li><a href="#attractions">五奇絕景</a></li>
+            <li><a href="#schedule">行程推薦</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主視覺區 Hero Section -->
+    <header class="hero">
+        <h1>漫步雲端・聆聽森林的呼吸</h1>
+        <p>探索台灣最震撼的日出、千年的巨木群神話，與隱密在鐵道迷霧中的眠月線。給自己一場沉浸式的森林芬多精療癒之旅。</p>
+        <a href="#schedule" class="cta-btn">立即預訂導覽接駁</a>
+    </header>
+
+    <!-- 響應式景點卡片區 -->
+    <section class="container" id="attractions">
+        <h2 class="section-title">阿里山必訪絕景</h2>
+        <div class="grid">
+            <!-- 景點卡片 1 -->
+            <div class="card">
+                <!-- 請將此處路徑替換成您的實際 JPG 圖片檔名 -->
+                <img src="hoanghon.jpg" alt="祝山觀日出">
+                <div class="card-content">
+                    <h3>祝山觀日出</h3>
+                    <p>當清晨的第一道曙光穿透玉山主峰的雲海，金黃色的光芒灑在阿里山頭，那一刻的震撼將成為您一生難忘的記憶。</p>
+                </div>
+            </div>
+            <!-- 景點卡片 2 -->
+            <div class="card">
+                <!-- 請將此處路徑替換成您的實際 JPG 圖片檔名 -->
+                <img src="tau.jpg" alt="眠月線失落鐵道">
+                <div class="card-content">
+                    <h3>眠月線失落鐵道</h3>
+                    <p>走進時光暫停的森林鐵路，高空鐵橋與廢棄車站隱沒在終年繚繞的雲霧中，是冒險者與攝影玩家的夢幻秘境。</p>
+                </div>
+            </div>
+            <!-- 景點卡片 3 -->
+            <div class="card">
+                <!-- 請將此處路徑替換成您的實際 JPG 圖片檔名 -->
+                <img src="rung.jpg" alt="水山巨木群">
+                <div class="card-content">
+                    <h3>水山巨木群</h3>
+                    <p>漫步在極致寧靜的檜木林道中，仰望擁有超過兩千年歷史的紅檜神木，與大自然進行一場跨越千年的心靈對話。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 手風琴選單行程區 -->
+    <section class="container" id="schedule" style="background-color: rgba(45,74,62,0.03); border-radius: 12px;">
+        <h2 class="section-title">經典兩天一夜行程規劃</h2>
+        <div class="accordion-wrapper">
+            
+            <!-- 第一天 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="day1" checked>
+                <label class="accordion-title" for="day1">Day 1：迷霧森林與神木洗禮</label>
+                <div class="accordion-content">
+                    <p>中午抵達阿里山國家森林遊樂區 ➔ 入住森林旅宿 ➔ 下午漫步水山巨木步道，沿著舊鐵道尋訪千年神木 ➔ 傍晚至慈雲寺觀賞絕美落日與雲海 ➔ 享用在地檜木特色晚餐。</p>
+                </div>
+            </div>
+
+            <!-- 第二天 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="day2">
+                <label class="accordion-title" for="day2">Day 2：祝山曙光與鐵道秘境</label>
+                <div class="accordion-content">
+                    <p>凌晨搭乘祝山線觀日小火車 ➔ 祝山觀景台迎接日出躍出山頭 ➔ 晨曦中漫步沼平公園 ➔ 挑戰眠月線失落鐵道探險（需提前申請） ➔ 帶著滿滿芬多精愉快返程。</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p>© 2026 阿里山數位觀光行銷專案．AI協作網頁作業展示</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; color: #aaaaaa;">觀光數位行銷實戰課程作業[cite: 1]</p>
+    </footer>
+
+</body>
+</html>
